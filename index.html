@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Resizable - Default functionality</title>
+  <link rel="stylesheet" href="Css/jquery-ui.css">
+  <link rel="stylesheet" href="Css/style.css">
+  <style>
+    .rec {
+      width: 50px;
+      height: 50px;
+      border: 5px solid;
+      border-color: black;
+      background: rgba(255, 255, 255, 0);
+    }
+
+    .wrapper {
+      width: 1392px;
+      height: 1040px;
+    }
+    .draggable{
+      cursor: move;
+    }
+    .draggableY{
+      cursor: move;
+    }
+    .moveLine {
+        border: 1px dashed #000;
+        width: 1392px;
+        margin: auto;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        
+        /* text-align: center; */
+    }
+  </style>
+  <script src="jQuery/jquery-1.12.4.js"></script>
+  <script src="jQuery/jquery-ui.js"></script>
+  <script>
+    $(function () {
+      $(".draggable").draggable({containment: "parent"});
+      $(".draggableY").draggable({
+        containment: "parent",
+        axis:"y"
+      });
+      $(".resizable").resizable({
+        resize: function (e, ui) {
+          $('#width').text(ui.size.width);
+          $('#height').text(ui.size.height);
+        }
+      });
+      $("#Rectangle").click(function () {
+        $(".rec").toggle();
+      });
+      $("#Line").click(function () {
+        $(".moveLine").toggle();
+      });
+
+      $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+        $( this )
+          .find("img").attr("src","");
+      }
+    });
+
+    });
+  </script>
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <button id="Rectangle">Rectangle</button>
+    <button id="Line">Line</button>
+    <br>
+    <img src="feature-picture-3.jpg" alt="Fault">
+    <div class="resizable draggable droppable rec"></div>
+    <div class="draggableY droppable moveLine"></div>
+  </div>
+
+
+</body>
+
+</html>
