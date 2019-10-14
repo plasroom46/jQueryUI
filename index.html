@@ -11,41 +11,49 @@
     .rec {
       width: 50px;
       height: 50px;
-      border: 5px solid;
-      border-color: black;
+      border: 5px dashed;
+      border-color: red;
       background: rgba(255, 255, 255, 0);
+      position: absolute;
     }
 
     .wrapper {
       width: 1392px;
       height: 1040px;
     }
-    .draggable{
+
+    .draggable {
       cursor: move;
     }
-    .draggableY{
+
+    .draggableY {
       cursor: move;
     }
+
     .moveLine {
-        border: 1px dashed #000;
-        width: 1392px;
-        height: 0px;
-        margin: auto;
-        margin-top: 5%;
-        margin-bottom: 5%;        
-        text-align: center; 
-        font-size: 28px;
-        transform: rotate(180deg);
+      border: 1px dashed red;
+      width: 1392px;
+      height: 0px;
+      margin: auto;
+      margin-top: 5%;
+      margin-bottom: 5%;
+      text-align: center;
+      font-size: 28px;
+      color: red;
+      position: absolute;
+      transform: rotate(180deg);
     }
   </style>
   <script src="jQuery/jquery-1.12.4.js"></script>
   <script src="jQuery/jquery-ui.js"></script>
   <script>
     $(function () {
-      $(".draggable").draggable({containment: "parent"});
+      $(".draggable").draggable({
+        containment: "parent"
+      });
       $(".draggableY").draggable({
         containment: "parent",
-        axis:"y"
+        axis: "y"
       });
       $(".resizable").resizable({
         resize: function (e, ui) {
@@ -60,12 +68,37 @@
         $(".moveLine").toggle();
       });
 
-      $( ".droppable" ).droppable({
-      drop: function( event, ui ) {
-        $( this )
-          .find("img").attr("src","");
-      }
-    });
+      // 參考網站
+      // https://stackoverflow.com/questions/48234253/jquery-drag-drop-an-image-from-desktop-and-make-it-resizable
+      // https://stackoverflow.com/questions/708416/how-can-l-get-the-image-size-before-it-loads-into-html
+
+      $('#droppableImg').on({
+        'dragover dragenter': function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        },
+        'drop': function (e, ui) {
+          var dataTransfer = e.originalEvent.dataTransfer;
+          if (dataTransfer && dataTransfer.files.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            $.each(dataTransfer.files, function (i, file) {
+              var reader = new FileReader();
+              reader.onload = $.proxy(function (file, event) {
+                var source = file.type.match('image.*') ? event.target.result : "";
+                
+                //先載入已取得圖片寬度
+                $('img').attr("src", source).load(function () {
+                    $('.moveLine').width(this.width);
+                  });;
+                
+              }, this, file);
+              reader.readAsDataURL(file);
+            });
+          }
+        }
+      });
+      $('.moveLine').width($('img').width());
 
     });
   </script>
@@ -73,11 +106,11 @@
 
 <body>
 
-  <div class="wrapper">
+  <div class="wrapper" id="droppableImg">
     <button id="Line">Line</button>
     <button id="Rectangle">Rectangle</button>
     <br>
-    <img src="feature-picture-3.jpg" alt="Fault">
+    <img src="feature-picture-3.jpg" alt="Failed">
     <div class="draggableY droppable moveLine">I</div>
     <div class="resizable draggable droppable rec"></div>
   </div>
