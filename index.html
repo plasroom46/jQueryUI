@@ -29,7 +29,8 @@
     .draggableY {
       cursor: move;
     }
-
+    /* 參考 */
+    /* https://ithelp.ithome.com.tw/articles/10208813 */
     .moveLine {
       border: 1px dashed red;
       width: 1392px;
@@ -37,11 +38,19 @@
       margin: auto;
       margin-top: 5%;
       margin-bottom: 5%;
-      text-align: center;
+      /* text-align: center; */
       font-size: 28px;
       color: red;
       position: absolute;
-      transform: rotate(180deg);
+      /* transform: rotate(180deg); */
+    }
+    .moveLine::after{
+      content: "";
+            border: 1px solid blue;
+            left: 696px;
+            top: -15px;
+            height: 10px;
+            position: relative;
     }
   </style>
   <script src="jQuery/jquery-1.12.4.js"></script>
@@ -111,7 +120,7 @@
     <button id="Rectangle">Rectangle</button>
     <br>
     <img src="feature-picture-3.jpg" alt="Failed">
-    <div class="draggableY droppable moveLine">I</div>
+    <div class="draggableY droppable moveLine"></div>
     <div class="resizable draggable droppable rec"></div>
   </div>
 
