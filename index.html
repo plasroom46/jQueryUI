@@ -36,22 +36,22 @@
       width: 1392px;
       height: 0px;
       margin: auto;
-      margin-top: 5%;
-      margin-bottom: 5%;
-      /* text-align: center; */
-      font-size: 28px;
+      /* margin-top: 5%;
+      margin-bottom: 5%; */
+      text-align: center;
+      font-size: 36px;
       color: red;
       position: absolute;
-      /* transform: rotate(180deg); */
+      transform: rotate(180deg);
     }
-    .moveLine::after{
+    /* .moveLine::after{
       content: "";
-            border: 1px solid blue;
+            border: 1px dashed red;
             left: 696px;
             top: -15px;
             height: 10px;
             position: relative;
-    }
+    } */
   </style>
   <script src="jQuery/jquery-1.12.4.js"></script>
   <script src="jQuery/jquery-ui.js"></script>
@@ -66,8 +66,10 @@
       });
       $(".resizable").resizable({
         resize: function (e, ui) {
-          $('#width').text(ui.size.width);
-          $('#height').text(ui.size.height);
+          var size='width：'+ ui.size.width + ' px、height：'+ ui.size.height + ' px'
+          var position='left：' + ui.position.left + ' px、top：' + ui.position.top + ' px'
+          var description=size+'<br>'+position
+          $('#rectangleDescription').html(description);
         }
       });
       $("#Rectangle").click(function () {
@@ -96,7 +98,7 @@
               reader.onload = $.proxy(function (file, event) {
                 var source = file.type.match('image.*') ? event.target.result : "";
                 
-                //先載入已取得圖片寬度
+                // 先載入已取得圖片寬度
                 $('img').attr("src", source).load(function () {
                     $('.moveLine').width(this.width);
                   });;
@@ -120,11 +122,13 @@
     <button id="Rectangle">Rectangle</button>
     <br>
     <img src="feature-picture-3.jpg" alt="Failed">
-    <div class="draggableY droppable moveLine"></div>
+    <div class="draggableY droppable moveLine">↑</div>
     <div class="resizable draggable droppable rec"></div>
   </div>
-
-
+  <footer>
+      <div id="rectangleDescription"></div>
+  </footer>
+  
 </body>
 
 </html>
